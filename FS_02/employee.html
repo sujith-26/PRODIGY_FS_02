@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Form (GET)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #3d2b1f; /* Dark Brown Background */
+            color: #ffffff; /* White text for contrast */
+            margin: 0;
+            padding: 0;
+        }
+
+        #form {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5dc; /* Light Brown background for the form */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #f5f5dc; /* Light brown color for the heading */
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #3d2b1f; /* Dark brown text */
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        button[type="submit"] {
+            background-color: #f5f5dc; /* Light Brown button color */
+            color: #3d2b1f; /* Dark brown text on buttons */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #3d2b1f; /* Dark brown on hover */
+            color: #f5f5dc; /* Light brown text on hover */
+        }
+
+        .buttons {
+            text-align: center;
+        }
+
+        .radio-label {
+            font-weight: normal;
+            color: #3d2b1f; /* Dark brown for radio labels */
+        }
+    </style>
+</head>
+<body>
+    <h1>EMPLOYEE DETAILS</h1>
+    <form id="form" method="get">
+        <label for="username">EMPLOYEE NAME:</label>
+        <input type="text" id="username" name="username"><br>
+
+        <label for="id">EMPLOYEE ID:</label>
+        <input type="text" id="id" name="id"><br>
+
+        <label for="branch">BRANCH:</label>
+        <select id="branch" name="branch">
+            <option value="select">Select any one Branch</option>
+            <option value="Headquarters">Headquarters</option>
+            <option value="Development">Development</option>
+            <option value="Quality Assurance">Quality Assurance</option>
+            <option value="Customer Support">Customer Support</option>
+            <option value="Sales">Sales</option>
+        </select><br>
+
+        <label>Gender:</label>
+        <input type="radio" id="male" name="gender" value="Male">
+        <label for="male" class="radio-label">Male</label>
+        <input type="radio" id="female" name="gender" value="Female">
+        <label class="radio-label">Female</label><br><br>
+
+        <label for="phno">MOBILE NO:</label>
+        <input type="text" id="phno" name="phno"><br>
+
+        <label for="branchadd">BRANCH ADDRESS:</label>
+        <input type="text" id="branchadd" name="branchadd"><br>
+
+        <div class="buttons">
+            <button type="submit" onclick="validateForm(event, '/insert')">Insert</button>
+            <button type="submit" onclick="validateForm(event, '/delete')">Delete</button>
+            <button type="submit" onclick="validateForm(event, '/update')">Update</button>
+            <button type="submit" onclick="validateForm(event, '/report')">Report</button>
+        </div>
+    </form>
+
+    <script>
+        function validateForm(event, path) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const id = document.getElementById('id').value.trim();
+            const branch = document.getElementById('branch').value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const phno = document.getElementById('phno').value.trim();
+            const branchadd = document.getElementById('branchadd').value.trim();
+
+            if (!username) {
+                alert('Please enter the employee name.');
+                return;
+            }
+
+            if (!id) {
+                alert('Please enter the employee ID.');
+                return;
+            }
+
+            if (branch === 'select') {
+                alert('Please select a branch.');
+                return;
+            }
+
+            if (!gender) {
+                alert('Please select a gender.');
+                return;
+            }
+
+            if (!phno || !/^\d{10}$/.test(phno)) {
+                alert('Please enter a valid 10-digit mobile number.');
+                return;
+            }
+
+            if (!branchadd) {
+                alert('Please enter the branch address.');
+                return;
+            }
+
+            // Set the form action and submit
+            document.getElementById('form').action = 'http://localhost:7050' + path;
+
+            if (path === '/report') {
+                window.location.href = 'http://localhost:7050/report';
+            } else {
+                document.getElementById('form').submit();
+            }
+        }
+    </script>
+</body>
+</html>
